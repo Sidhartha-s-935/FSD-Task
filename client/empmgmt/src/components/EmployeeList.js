@@ -44,6 +44,7 @@ function EmployeeList() {
             <th>Email</th>
             <th>Department</th>
             <th>Role</th>
+            <th>Phone</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -55,12 +56,13 @@ function EmployeeList() {
               <td>{employee.email}</td>
               <td>{employee.department}</td>
               <td>{employee.role}</td>
+              <td>{employee.phone}</td>
               <td>
                 <button 
                   className="delete-btn"
                   onClick={() => handleDeleteEmployee(employee.id)}
                 >
-                  ✖
+                  clear
                 </button>
               </td>
             </tr>

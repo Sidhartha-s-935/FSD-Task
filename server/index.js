@@ -89,6 +89,32 @@ app.get('/employees', async (req, res) => {
     }
 });
 
+app.delete('/employees/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // First, check if the employee exists
+        const checkQuery = 'SELECT * FROM employees WHERE id = $1';
+        const checkResult = await pool.query(checkQuery, [id]);
+
+        if (checkResult.rows.length === 0) {
+            return res.status(404).json({ error: 'Employee not found' });
+        }
+
+        // If employee exists, proceed with deletion
+        const deleteQuery = 'DELETE FROM employees WHERE id = $1';
+        await pool.query(deleteQuery, [id]);
+
+        res.json({ 
+            message: 'Employee deleted successfully',
+            deletedEmployeeId: id 
+        });
+    } catch (err) {
+        console.error('Error deleting employee:', err.message);
+        res.status(500).json({ error: 'Failed to delete employee' });
+    }
+});
+
 // Add Employee Route
 app.post('/add-employee', employeeValidations, async (req, res) => {
     // Check for validation errors
