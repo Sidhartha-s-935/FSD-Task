@@ -14,11 +14,6 @@ services:
     - "5000:5000"
     depends_on:
       - postgres
-    environment:
-      POSTGRES_HOST: postgres
-      POSTGRES_USER: your_username
-      POSTGRES_PASSWORD: your_password
-      POSTGRES_DB: your_database
 
   postgres:
     image: postgres:15

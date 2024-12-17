@@ -56,7 +56,7 @@ function AddEmployee() {
 
   return (
     <div className="add-employee-form">
-      <h2>Add New Employee</h2>
+      <h2>Add New Emp</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>First Name</label>
@@ -130,15 +130,20 @@ function AddEmployee() {
         </div>
         <div className="form-group">
           <label>Role</label>
-          <input
-            type="text"
+          <select
             name="role"
             value={formData.role}
             onChange={handleChange}
-          />
+          >
+            <option value="">Select a role</option>
+            <option value="Admin">Admin</option>
+            <option value="Manager">Manager</option>
+            <option value="Developer">Developer</option>
+            <option value="Designer">Designer</option>
+            <option value="Tester">Tester</option>
+          </select>
           {errors.role && <span className="error">{errors.role}</span>}
         </div>
-        {/* ... existing form inputs ... */}
         <div className="form-actions">
           <button type="submit" className="submit-btn">Add Employee</button>
           <button 

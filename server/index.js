@@ -27,26 +27,25 @@ pool.connect((err) => {
     }
 });
 
-// Create Employees Table
-pool.query(`
-    CREATE TABLE IF NOT EXISTS employees (
-        id SERIAL PRIMARY KEY,
-        first_name TEXT NOT NULL,
-        last_name TEXT NOT NULL,
-        employee_id TEXT UNIQUE NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        phone TEXT NOT NULL,
-        department TEXT NOT NULL,
-        date_of_joining DATE NOT NULL,
-        role TEXT NOT NULL
-    )
-`, (err) => {
-    if (err) {
-        console.error('Error creating table:', err.message);
-    } else {
-        console.log('Employees table ensured.');
-    }
-});
+// pool.query(`
+//     CREATE TABLE IF NOT EXISTS employees (
+//         id SERIAL PRIMARY KEY,
+//         first_name TEXT NOT NULL,
+//         last_name TEXT NOT NULL,
+//         employee_id TEXT UNIQUE NOT NULL,
+//         email TEXT UNIQUE NOT NULL,
+//         phone TEXT NOT NULL,
+//         department TEXT NOT NULL,
+//         date_of_joining DATE NOT NULL,
+//         role TEXT NOT NULL
+//     )
+// `, (err) => {
+//     if (err) {
+//         console.error('Error creating table:', err.message);
+//     } else {
+//         console.log('Employees table ensured.');
+//     }
+// });
 
 // Validation Middleware
 const employeeValidations = [
@@ -78,7 +77,6 @@ const employeeValidations = [
     body('role').trim().notEmpty().withMessage('Role is required')
 ];
 
-// Fetch All Employees
 app.get('/employees', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM employees');
@@ -93,7 +91,6 @@ app.delete('/employees/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        // First, check if the employee exists
         const checkQuery = 'SELECT * FROM employees WHERE id = $1';
         const checkResult = await pool.query(checkQuery, [id]);
 
@@ -101,7 +98,6 @@ app.delete('/employees/:id', async (req, res) => {
             return res.status(404).json({ error: 'Employee not found' });
         }
 
-        // If employee exists, proceed with deletion
         const deleteQuery = 'DELETE FROM employees WHERE id = $1';
         await pool.query(deleteQuery, [id]);
 
@@ -115,9 +111,7 @@ app.delete('/employees/:id', async (req, res) => {
     }
 });
 
-// Add Employee Route
 app.post('/add-employee', employeeValidations, async (req, res) => {
-    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -135,7 +129,6 @@ app.post('/add-employee', employeeValidations, async (req, res) => {
     } = req.body;
 
     try {
-        // Check for existing employee ID or email
         const checkQuery = `
             SELECT * FROM employees 
             WHERE employee_id = $1 OR email = $2
@@ -152,7 +145,6 @@ app.post('/add-employee', employeeValidations, async (req, res) => {
             }
         }
 
-        // Insert new employee
         const insertQuery = `
             INSERT INTO employees 
             (first_name, last_name, employee_id, email, phone, department, date_of_joining, role) 

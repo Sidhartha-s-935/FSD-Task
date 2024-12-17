@@ -24,7 +24,7 @@ function EmployeeList() {
   const handleDeleteEmployee = async (employeeId) => {
     try {
       await axios.delete(`http://localhost:5000/employees/${employeeId}`);
-      fetchEmployees(); // Refresh the list
+      fetchEmployees(); 
     } catch (err) {
       setError('Failed to delete employee');
     }
@@ -39,10 +39,10 @@ function EmployeeList() {
       <table>
         <thead>
           <tr>
-            <th>Employee ID</th>
+            <th>Emp Id</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Department</th>
+            <th>Dept</th>
             <th>Role</th>
             <th>Phone</th>
             <th>Actions</th>
